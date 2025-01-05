@@ -12,6 +12,9 @@ public class PaymentService {
 
     @Autowired
     private PaymentRepository paymentRepository;
+    @Autowired
+    private ExternalApiService externalApiService;
+
 
     /**
      * 결제 승인/거절 처리
@@ -21,10 +24,18 @@ public class PaymentService {
      * @return 결제 상태
      */
     public String processPayment(String tokenValue, Double amount) {
+        // 1. TSP에 토큰 검증 요청
+        Boolean isValid = externalApiService.postToTspVerify(tokenValue);
+
+        if (!isValid) {
+            throw new RuntimeException("유효하지 않은 토큰입니다.");
+        }
+
+        // 2. 결제 처리
         Payment payment = new Payment();
         payment.setTokenValue(tokenValue);
         payment.setAmount(amount);
-        payment.setStatus("승인"); // 여기서는 기본적으로 승인 처리
+        payment.setStatus("승인"); // 기본적으로 승인 처리
         payment.setPaymentDt(LocalDateTime.now());
 
         paymentRepository.save(payment);
