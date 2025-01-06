@@ -35,7 +35,7 @@ public class PaymentService {
         Payment payment = new Payment();
         payment.setTokenValue(tokenValue);
         payment.setAmount(amount);
-        payment.setStatus("승인"); // 기본적으로 승인 처리
+        payment.setStatus("결제 승인"); // 기본적으로 승인 처리
         payment.setPaymentDt(LocalDateTime.now());
 
         paymentRepository.save(payment);

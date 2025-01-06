@@ -1,5 +1,7 @@
 package com.example.issuer.controller;
 
+import com.example.issuer.dto.PaymentRequest;
+import com.example.issuer.dto.PaymentResponse;
 import com.example.issuer.service.PaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,15 +17,15 @@ public class PaymentController {
     /**
      * 결제 요청 API
      *
-     * @param tokenValue 토큰 값
-     * @param amount 결제 금액
      * @return 결제 상태
      */
     @PostMapping("/process-payment")
-    public ResponseEntity<String> processPayment(
-            @RequestParam String tokenValue,
-            @RequestParam Double amount) {
-        String status = paymentService.processPayment(tokenValue, amount);
-        return ResponseEntity.ok(status);
+    public ResponseEntity<PaymentResponse> processPayment(
+            @RequestBody PaymentRequest request) {
+        String status = paymentService.processPayment(request.getTokenValue(), request.getAmount());
+        PaymentResponse res = new PaymentResponse();
+        res.setMessage(status);
+        res.setSuccess(true);
+        return ResponseEntity.ok(res);
     }
 }
