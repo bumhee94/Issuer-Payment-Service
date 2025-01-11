@@ -1,16 +1,15 @@
 package com.example.issuer.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Getter
-@Setter
 @NoArgsConstructor
+@Builder
+@AllArgsConstructor
 public class Payment {
 
     @Id

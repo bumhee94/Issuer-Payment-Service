@@ -3,29 +3,26 @@ package com.example.issuer.controller;
 import com.example.issuer.dto.PaymentRequest;
 import com.example.issuer.dto.PaymentResponse;
 import com.example.issuer.service.PaymentService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import jakarta.validation.Valid;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/issuer")
 public class PaymentController {
 
-    @Autowired
-    private PaymentService paymentService;
+    private final PaymentService paymentService;
 
     /**
      * 결제 요청 API
      *
      * @return 결제 상태
      */
-    @PostMapping("/process-payment")
-    public ResponseEntity<PaymentResponse> processPayment(
-            @RequestBody PaymentRequest request) {
-        String status = paymentService.processPayment(request.getTokenValue(), request.getAmount());
-        PaymentResponse res = new PaymentResponse();
-        res.setMessage(status);
-        res.setSuccess(true);
-        return ResponseEntity.ok(res);
+    @PostMapping("/payments")
+    public ResponseEntity<PaymentResponse> processPayment(@Valid @RequestBody PaymentRequest request) {
+        PaymentResponse response = paymentService.processPayment(request);
+        return ResponseEntity.ok(response);
     }
 }

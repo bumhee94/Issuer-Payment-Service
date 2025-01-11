@@ -19,19 +19,13 @@ public class ExternalApiService {
      */
     public Boolean postToTspVerify(String tokenValue) {
         log.info("TSP로 토큰 검증 요청 시작: TokenValue={}", tokenValue);
-
-        try {
-            ResponseEntity<Boolean> response = restTemplate.postForEntity(
-                    TSP_URL,
-                    tokenValue,
-                    Boolean.class
-            );
-            log.info("TSP로부터 토큰 검증 응답 수신: StatusCode={}, ResponseBody={}",
-                    response.getStatusCode(), response.getBody());
-            return response.getBody();
-        } catch (Exception e) {
-            log.error("TSP 토큰 검증 요청 실패: Message={}", e.getMessage(), e);
-            throw new RuntimeException("TSP와 통신 중 오류 발생: " + e.getMessage(), e);
-        }
+        ResponseEntity<Boolean> response = restTemplate.postForEntity(
+                TSP_URL,
+                tokenValue,
+                Boolean.class
+        );
+        log.info("TSP로부터 토큰 검증 응답 수신: StatusCode={}, ResponseBody={}",
+                response.getStatusCode(), response.getBody());
+        return response.getBody();
     }
 }
