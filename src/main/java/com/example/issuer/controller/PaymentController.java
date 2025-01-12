@@ -20,7 +20,7 @@ public class PaymentController {
      *
      * @return 결제 상태
      */
-    @PostMapping("/payments")
+    @PostMapping("/process-payment")
     public ResponseEntity<PaymentResponse> processPayment(@Valid @RequestBody PaymentRequest request) {
         PaymentResponse response = paymentService.processPayment(request);
         return ResponseEntity.ok(response);
